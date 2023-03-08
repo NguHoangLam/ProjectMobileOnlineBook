@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_orange_light"
+            android:orientation="vertical">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarhomepage"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#fef1d7"
+                app:title="Home-Book Store"
+                app:titleTextColor="#11006f">
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ViewFlipper
+                android:id="@+id/viewflipper"
+
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+            </ViewFlipper>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="New Books"
+                    android:textColor="#11006f"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <com.google.android.material.navigation.NavigationView
+
+            android:id="@+id/navigationview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+
+                >
+                <androidx.drawerlayout.widget.DrawerLayout
+                    android:id="@+id/drawerLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/img_Avatar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/user"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="20dp"
+                            />
+                        <TextView
+                            android:id="@+id/tv_userNameProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="User Name"
+                            android:textStyle="bold"
+                            android:textColor="#11006f"
+                            android:paddingLeft="10dp"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:id="@+id/tv_userRankProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:text="VIP Member"
+                            android:textColor="#11006f"
+                            android:textSize="20sp"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1">
+                                <TextView
+                                    android:id="@+id/tv_totalspent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Total Spent 2022"
+                                    android:textAlignment="textStart"
+                                    android:textSize="12sp"
+                                    android:textColor="#11006f"/>
+                                <TextView
+                                    android:id="@+id/tv_totalspentdetails"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="999.999"
+                                    android:textAlignment="textStart"
+                                    android:textSize="24sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#11006f"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="right"
+                                android:layout_weight="1"
+                                android:layout_marginRight="10dp">
+                                <TextView
+                                    android:id="@+id/tv_rewardpoint"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Reward Point"
+                                    android:textAlignment="textEnd"
+                                    android:textSize="12sp"
+                                    android:textColor="#11006f"/>
+                                <TextView
+                                    android:id="@+id/tv_rewardpointdetails"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="textEnd"
+                                    android:text="999"
+                                    android:textStyle="bold"
+                                    android:textSize="24sp"
+                                    android:textColor="#11006f"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <Button
+                            android:id="@+id/btn_logout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Log Out"
+                            android:textSize="20sp"
+                            android:layout_marginTop="20dp"
+                            android:textColor="#11006f"
+                            android:backgroundTint="@color/white"
+                            android:layout_gravity="center"
+                            />
+                    </LinearLayout>
+                </androidx.drawerlayout.widget.DrawerLayout>
+                <TextView
+                    android:id="@+id/tv_loginFromTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Login Form"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="#11006f"
+                    android:textAlignment="center"
+                    android:layout_marginTop="60dp"
+
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp">
+                    <TextView
+                        android:id="@+id/tv_userNameLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Name: "
+                        android:textColor="#11006f"
+                        android:textSize="18sp"/>
+                    <EditText
+                        android:id="@+id/edt_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#11006f"
+                        android:text=""
+                        android:hint="User Name..."/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:id="@+id/tv_passwordLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Name: "
+                        android:textColor="#11006f"
+                        android:textSize="18sp"/>
+                    <EditText
+                        android:id="@+id/edt_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textColor="#11006f"
+                        android:text=""
+                        android:hint="Password..."
+                        android:inputType="textPassword"
+                        />
+                </LinearLayout>
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textColor="#11006f"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
