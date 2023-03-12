@@ -8,13 +8,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
+import android.provider.Settings;
 import android.text.Layout;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -25,8 +30,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -42,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     EditText edt_UserName, edt_Password;
     Button btn_Login, btn_Logout;
+
+    SearchView searchView;
+
+    ImageButton btn_moneysort;
+    boolean moneyUp = true;
+
+    ImageButton btn_namesort;
+    boolean nameUp = true;
     DrawerLayout drawerLogin;
     TextView tv_UserNameProfile, tv_UserType, tv_TotalSpentDetails, tv_TotalRewardPoint;
     List<BookCategories> bookCategoriesList = new ArrayList<>();
@@ -82,10 +97,10 @@ public class MainActivity extends AppCompatActivity {
                             tv_UserNameProfile.setText(auth.getFullName());
                             int rank = auth.getAccountType();
                             if(rank==0){
-                                tv_UserType.setText("Normal Member");
+                                tv_UserType.setText(getString(R.string.normalMember));
                             }
                             if(rank==1){
-                                tv_UserType.setText("VIP Member");
+                                tv_UserType.setText(getString(R.string.VIPMember));
                             }
                             tv_TotalSpentDetails.setText(auth.getTotalSpent()+"");
                             tv_TotalRewardPoint.setText(auth.getRewardPoint()+"");
@@ -97,9 +112,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (checkLogin){
-                    Toast.makeText(MainActivity.this,"Login Success!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,getString(R.string.loginSuccess), Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(MainActivity.this,"Login Fail!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,getString(R.string.loginFail), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -112,7 +127,66 @@ public class MainActivity extends AppCompatActivity {
                 edt_Password.setText("");
             }
         });
+        btn_moneysort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Book> books = getListData();
+                if (moneyUp){
+                    view.setBackgroundResource(R.drawable.moneydown);
+                    moneyUp = false;
+                    Collections.sort(books, (s1, s2) -> {
+                        return Integer.parseInt(s1.getPrice()) - Integer.parseInt(s2.getPrice());
 
+                    });
+                }else{
+                    moneyUp = true;
+                    view.setBackgroundResource(R.drawable.moneyup);
+                    Collections.sort(books, (s1, s2) -> {
+                        return Integer.parseInt(s2.getPrice()) - Integer.parseInt(s1.getPrice());
+                    });
+                }
+                recyclerView.setAdapter(new BookRecyclerViewAdapter(MainActivity.this, books));
+            }
+        });
+
+        btn_namesort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Book> books = getListData();
+                if (nameUp){
+                    view.setBackgroundResource(R.drawable.namedown);
+                    nameUp = false;
+                    Collections.sort(books, (s1, s2) -> {
+                        return s1.getBookTitle().compareTo(s2.getBookTitle());
+                    });
+                }else{
+                    nameUp = true;
+                    view.setBackgroundResource(R.drawable.nameup);
+                    Collections.sort(books, (s1, s2) -> {
+                        return s2.getBookTitle().compareTo(s1.getBookTitle());
+                    });
+                }
+                recyclerView.setAdapter(new BookRecyclerViewAdapter(MainActivity.this, books));
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                BookRecyclerViewAdapter bookRecycle = new BookRecyclerViewAdapter(MainActivity.this, books);
+                bookRecycle.getFilter().filter(s);
+                recyclerView.setAdapter(bookRecycle);
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                BookRecyclerViewAdapter bookRecycle = new BookRecyclerViewAdapter(MainActivity.this, books);
+                bookRecycle.getFilter().filter(s);
+                recyclerView.setAdapter(bookRecycle);
+                return false;
+            }
+        });
 
 
 
@@ -175,6 +249,14 @@ public class MainActivity extends AppCompatActivity {
         tv_UserType = (TextView) findViewById(R.id.tv_userRankProfile);
         tv_TotalSpentDetails =(TextView) findViewById(R.id.tv_totalspentdetails);
         tv_TotalRewardPoint = (TextView) findViewById(R.id.tv_rewardpointdetails);
+        btn_moneysort  = (ImageButton) findViewById(R.id.btn_moneysort);
+        btn_namesort  = (ImageButton) findViewById(R.id.btn_namesort);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) findViewById(R.id.searchView);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
 //        listViewCategories = findViewById(R.id.listviewmainmenu);
 //        BookCategories categories1 = new BookCategories(1,"Arts & Music");
 //        BookCategories categories2 = new BookCategories(2,"Business");
@@ -215,10 +297,15 @@ public class MainActivity extends AppCompatActivity {
                 myIntent.putExtra("UserPackage",bundle);
                 startActivity(myIntent);
             }else {
-                Toast.makeText(MainActivity.this,"Login First, Please !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this,getString(R.string.loginFirst), Toast.LENGTH_SHORT).show();
             }
 
 
+        }
+        if(id==R.id.action_language){
+            Intent languageIntent = new
+                    Intent(Settings.ACTION_LOCALE_SETTINGS);
+            startActivity(languageIntent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -234,11 +321,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id){
             case R.id.addtocart:
-                Toast.makeText(getApplicationContext(),"Add Successful!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.addSuccessful),Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.details:
-                Toast.makeText(getApplicationContext(),"Details...",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),getString(R.string.detail),Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -247,12 +334,12 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Book> getListData(){
         List<Book> list = new ArrayList<Book>();
-        Book book1 = new Book(1,"The Words of Jesus", "290000", "Various", "10", "Science fiction","book1","11/12/2022","Record your own words of wisdom for future generations. If you're looking for a new book in which to record your thoughts, lists, and more, you're in luck! Canterbury Classics, known for publishing fine works of literature, has released a new line of devotional journals for your writing pleasure.");
-        Book book2 = new Book(2,"Steve Jobs", "349000", "Walter Isaacson", "10", "Information Technology","book2","11/12/2022","Based on more than forty interviews with Steve Jobs conducted over two years--as well as interviews with more than 100 family members, friends, adversaries, competitors, and colleagues--Walter Isaacson has written a riveting story of the roller-coaster life and searingly intense personality of a creative entrepreneur whose passion for perfection and ferocious drive revolutionized six industries: personal computers, animated movies, music, phones, tablet computing, and digital publishing.");
-        Book book3 = new Book(3,"A Promised Land", "299000", "Barack Obama", "10", "U.S. History ","book3","11/12/2022","A riveting, deeply personal account of history in the making--from the president who inspired us to believe in the power of democracy");
-        Book book4 = new Book(4,"A Guide to Visual Presentation", "399000", "Ruzaimi Mat Rani", "10", "Drawing","book4","11/12/2022","Put pen to paper and master the quality graphics and visual presentation techniques to create creative commercial and architectural compositions!");
-        Book book5 = new Book(5,"Noise : A Flaw in Human Judgment", "199000", "Daniel Kahneman", "10", "Psychology","book5","11/12/2022","From the Nobel Prize-winning author of Thinking, Fast and Slow and the coauthor of Nudge, a revolutionary exploration of why people make bad judgments and how to make better ones--\"a tour de force\" (New York Times).");
-        Book book6 = new Book(6,"How Google Works", "179000", "Eric Schmidt, Jonathan Rosenberg", "10", "Information Technology","book6","11/12/2022","Seasoned Google executives Eric Schmidt and Jonathan Rosenberg provide an insider's guide to Google, from its business history and disruptive corporate strategy to developing a new managment philosophy and creating a corporate culture where innovation and creativity thrive.");
+        Book book1 = new Book(1,"The Words of Jesus", "290000", "Various", "10", "Science fiction","book1","11/12/2022",getString(R.string.book1));
+        Book book2 = new Book(2,"Steve Jobs", "349000", "Walter Isaacson", "10", "Information Technology","book2","11/12/2022",getString(R.string.book2));
+        Book book3 = new Book(3,"A Promised Land", "299000", "Barack Obama", "10", "U.S. History ","book3","11/12/2022",getString(R.string.book3));
+        Book book4 = new Book(4,"A Guide to Visual Presentation", "399000", "Ruzaimi Mat Rani", "10", "Drawing","book4","11/12/2022",getString(R.string.book4));
+        Book book5 = new Book(5,"Noise : A Flaw in Human Judgment", "199000", "Daniel Kahneman", "10", "Psychology","book5","11/12/2022",getString(R.string.book5));
+        Book book6 = new Book(6,"How Google Works", "179000", "Eric Schmidt, Jonathan Rosenberg", "10", "Information Technology","book6","11/12/2022",getString(R.string.book6));
 
         list.add(book1);
         list.add(book2);

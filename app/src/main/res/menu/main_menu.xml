@@ -3,8 +3,12 @@
 
     <item
         android:id="@+id/Cart"
-        android:title="Cart" />
+        android:title="@string/cart" />
+    <item
+        android:id="@+id/action_language"
+        android:title="@string/language" >
+    </item>
     <item
         android:id="@+id/exit"
-        android:title="Exit" />
+        android:title="@string/exit" />
 </menu>

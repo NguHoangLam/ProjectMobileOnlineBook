@@ -50,7 +50,7 @@ public class BookDetailsActivity extends Activity {
             public void onClick(View view) {
                 int quantity = Integer.parseInt(edt_Quantity.getText().toString());
                 if(quantity==Integer.parseInt(quantityStorage)){
-                    Toast.makeText(getApplicationContext(),"Quantity Cannot Bigger Than Storage Quantity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.quantityStorage), Toast.LENGTH_SHORT).show();
                 }else {
                     edt_Quantity.setText(quantity+1+"");
                 }
@@ -61,7 +61,7 @@ public class BookDetailsActivity extends Activity {
             public void onClick(View view) {
                 int quantity = Integer.parseInt(edt_Quantity.getText().toString());
                 if(quantity==1){
-                    Toast.makeText(getApplicationContext(),"Quantity Cannot Zero", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.quantityZero), Toast.LENGTH_SHORT).show();
                 }else {
                     edt_Quantity.setText(quantity-1+"");
                 }
@@ -87,16 +87,16 @@ public class BookDetailsActivity extends Activity {
                 List<Cart> carts = CartHelper.getAll(getApplicationContext());
                 if(carts.size()==0){
                     if(CartHelper.insert(getApplicationContext(),1,Id,title,priceCart,imgByte,quantityCart,subTotal,author,storage)){
-                        Toast.makeText(getApplicationContext(),"Add Success !!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),getString(R.string.addSuccess), Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 }else{
                     for (int i =0 ;i<carts.size();i++){
                         if(carts.get(i).getBookId()==Id){
-                            Toast.makeText(getApplicationContext(),"Book Has Been Added !!!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),getString(R.string.addBook), Toast.LENGTH_SHORT).show();
                         }else{
                             if(CartHelper.insert(getApplicationContext(),1,Id,title,priceCart,imgByte,quantityCart,subTotal,author,storage)){
-                                Toast.makeText(getApplicationContext(),"Add Success !!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),getString(R.string.addSuccess), Toast.LENGTH_SHORT).show();
                                 break;
                             }
                         }

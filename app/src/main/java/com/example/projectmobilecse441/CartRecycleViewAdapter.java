@@ -67,7 +67,7 @@ public class CartRecycleViewAdapter extends RecyclerView.Adapter<CartViewHolder>
             @Override
             public void onClick(View view) {
                 if(CartHelper.delete(context.getApplicationContext(), cart.getBookId())){
-                    Toast.makeText(context.getApplicationContext(), "Deleted Success !!!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context.getApplicationContext(), context.getResources().getString(R.string.deleteSuccess),Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -77,13 +77,13 @@ public class CartRecycleViewAdapter extends RecyclerView.Adapter<CartViewHolder>
                 int quantityStorage = cart.getQuantityStorage();
                 int currentQuantity = Integer.parseInt(holder.edt_quantity_cart.getText().toString());
                 if(currentQuantity==quantityStorage){
-                    Toast.makeText(context.getApplicationContext(),"Quantity Cannot Bigger Than Storage Quantity", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context.getApplicationContext(),context.getResources().getString(R.string.quantityStorage), Toast.LENGTH_SHORT).show();
                 }else {
                     holder.edt_quantity_cart.setText(currentQuantity+1+"");
                     int updateQuantity = Integer.parseInt(holder.edt_quantity_cart.getText().toString());
                     int updateSubtotal = updateQuantity * Integer.parseInt(holder.cartPriceView.getText().toString());
                     if (CartHelper.update(context.getApplicationContext(),cart.getBookId(),updateQuantity,updateSubtotal)){
-                        Toast.makeText(context.getApplicationContext(), "Quantity Has Changed !!!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getApplicationContext(), context.getResources().getString(R.string.quantityChanged),Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -93,13 +93,13 @@ public class CartRecycleViewAdapter extends RecyclerView.Adapter<CartViewHolder>
             public void onClick(View view) {
                 int currentQuantity = Integer.parseInt(holder.edt_quantity_cart.getText().toString());
                 if(currentQuantity==1){
-                    Toast.makeText(context.getApplicationContext(),"Quantity Cannot Zero", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context.getApplicationContext(),context.getResources().getString(R.string.quantityZero), Toast.LENGTH_SHORT).show();
                 }else {
                     holder.edt_quantity_cart.setText(currentQuantity-1+"");
                     int updateQuantity = Integer.parseInt(holder.edt_quantity_cart.getText().toString());
                     int updateSubtotal = updateQuantity * Integer.parseInt(holder.cartPriceView.getText().toString());
                     if (CartHelper.update(context.getApplicationContext(),cart.getBookId(),updateQuantity,updateSubtotal)){
-                        Toast.makeText(context.getApplicationContext(), "Quantity Has Changed !!!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.getApplicationContext(), context.getResources().getString(R.string.quantityChanged),Toast.LENGTH_SHORT).show();
                     }
                 }
             }

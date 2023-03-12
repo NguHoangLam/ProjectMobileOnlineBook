@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -18,16 +20,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BookRecyclerViewAdapter  extends RecyclerView.Adapter<BookViewHolder>{
+public class BookRecyclerViewAdapter  extends RecyclerView.Adapter<BookViewHolder> implements Filterable{
     private List<Book> books;
+    private List<Book> booksOld;
     private Context context;
     private LayoutInflater mLayoutInflater;
     Button Btn_holder;
 
     public BookRecyclerViewAdapter(Context context, List<Book> books) {
         this.books = books;
+        this.booksOld = books;
         this.context = context;
         mLayoutInflater = LayoutInflater.from(context);
     }
@@ -113,5 +118,38 @@ public class BookRecyclerViewAdapter  extends RecyclerView.Adapter<BookViewHolde
     @Override
     public int getItemCount(){
         return books.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String strSearch = charSequence.toString();
+                if (strSearch.isEmpty()){
+                    books = booksOld;
+                }else {
+                    List<Book> newbooks = new ArrayList<>();
+                    for (Book book: booksOld){
+                        if (book.getBookTitle().toLowerCase().contains(strSearch.toLowerCase()) ||
+                            book.getAuthor().toLowerCase().contains(strSearch.toLowerCase()) ||
+                            book.getDescription().toLowerCase().contains(strSearch.toLowerCase())){
+                            newbooks.add(book);
+                        }
+                    }
+                    books = newbooks;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = books;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                books = (List<Book>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

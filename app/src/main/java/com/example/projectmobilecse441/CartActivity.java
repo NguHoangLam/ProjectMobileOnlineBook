@@ -65,7 +65,7 @@ public class CartActivity extends AppCompatActivity {
                 Date date = new Date();
                 int billCode = (int) (new Date().getTime()/1000);
                 if(BillHelper.insert(getApplicationContext(),billCode,userId,total,formatter.format(date),address,phone)){
-                    Toast.makeText(getApplicationContext(),"Saved",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),getString(R.string.saved),Toast.LENGTH_SHORT).show();
                 }
                 for(int i=0;i<cartList.size();i++){
                     Cart cart = cartList.get(i);
